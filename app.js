@@ -1,9 +1,13 @@
 const express= require('express');
 const cors =require('cors');
 const cookieParser =require('cookie-parser');
+
+// Import another route
 const userRoute = require('./routes/user.route');
 const planRoute = require('./routes/plan.route');
 const noteRoute = require('./routes/everyNote.route');
+const frndRoute = require('./routes/friend.route');
+const terrRoute = require('./routes/terrTerg.route');
 
 const app =express();
 
@@ -31,6 +35,11 @@ app.use('/api/v1',userRoute);
 app.use('/api/v1',planRoute);
 // Note ROute
 app.use('/api/v1',noteRoute);
+// Friend route
+app.use('/api/v1',frndRoute);
+// Terror route
+app.use('/api/v1',terrRoute);
+
 
 
 
