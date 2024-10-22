@@ -8,6 +8,7 @@ const planRoute = require('./routes/plan.route');
 const noteRoute = require('./routes/everyNote.route');
 const frndRoute = require('./routes/friend.route');
 const terrRoute = require('./routes/terrTerg.route');
+const msgRoute = require('./routes/message.route');
 
 const app =express();
 
@@ -39,7 +40,8 @@ app.use('/api/v1',noteRoute);
 app.use('/api/v1',frndRoute);
 // Terror route
 app.use('/api/v1',terrRoute);
-
+// message route
+app.use('/api/v1',msgRoute)
 
 
 
