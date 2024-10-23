@@ -13,16 +13,15 @@ const msgRoute = require('./routes/message.route');
 const app =express();
 
 //Middleware funtion callling---->
+app.use(cookieParser());
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(cors());
-app.use(cookieParser());
 
 
 app.get('/',(req,res)=>{
     try {
         return res.status(200).sendFile(__dirname + '/view/index.html');
-        // res.clearCookie()
     } catch (error) {
         return res.status(500).json({success:false, messgae:`Something broke : ${error.messgae}`});
     };

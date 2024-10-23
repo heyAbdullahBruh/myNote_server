@@ -44,7 +44,8 @@ const loginUser =async(req,res)=>{
                               const token =JWT.sign(payload,process.env.JWT_SECRET,{expiresIn:'10d'});
                               res.cookie("token",token,{
                                 httpOnly:true,
-                                maxAge:'864000000'
+                                maxAge:'864000000',
+                                secure:true
                              }); 
                              return res.status(200).json({
                                 success:true,
