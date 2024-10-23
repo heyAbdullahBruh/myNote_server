@@ -11,12 +11,23 @@ const terrRoute = require('./routes/terrTerg.route');
 const msgRoute = require('./routes/message.route');
 
 const app =express();
+const allowedOrigins = ['http://localhost:3000'];
 
 //Middleware funtion callling---->
 app.use(cookieParser());
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
-app.use(cors());
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // This is important, allows cookies to be sent with requests
+}));
 
 
 app.get('/',(req,res)=>{
