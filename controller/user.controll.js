@@ -50,7 +50,7 @@ const loginUser =async(req,res)=>{
                                 success:true,
                                 message:'User Logged In Successfully',
                                 username:user.username,
-                                // token:token
+                                token:token
                              });
                         }else{
                             return res.status(400).json({success:false,message:'Authentication failed: incorect password'});
