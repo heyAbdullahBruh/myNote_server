@@ -11,7 +11,7 @@ const terrRoute = require('./routes/terrTerg.route');
 const msgRoute = require('./routes/message.route');
 
 const app =express();
-const allowedOrigins = ['http://localhost:3000','https://abdullah-shayed.vercel.app/'];
+// const allowedOrigins = ['http://localhost:3000','https://abdullah-shayed.vercel.app'];
 
 //Middleware funtion callling---->
 app.use(cookieParser());
@@ -21,16 +21,7 @@ app.use(express.static('public'));
 
 
 app.use(cors({
-    origin: function (origin, callback) {
-        // Allow requests with no origin, such as mobile apps or curl requests
-        if (!origin) return callback(null, true);
-        
-        if (allowedOrigins.includes(origin)) {
-          callback(null, true);
-        } else {
-          callback(new Error('Not allowed by CORS'));
-        }
-      },
+    origin: ['http://localhost:3000','https://abdullah-shayed.vercel.app'],
   credentials: true, // This is important, allows cookies to be sent with requests
 }));
 
