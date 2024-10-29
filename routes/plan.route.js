@@ -10,5 +10,4 @@ router.patch('/plan/update/:plId',cheakAuth,updatePlan);
 router.delete('/plan/delete/:plId',cheakAuth,deletePlan);
 
 
-
 module.exports = router;

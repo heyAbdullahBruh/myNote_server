@@ -7,6 +7,7 @@ const Fstorage=multer.diskStorage({
         cb(null,'./public/frndImg');
     },
     filename:(req,file,cb)=>{
+
         const fileExt=path.extname(file.originalname);
         const filename=file.originalname.replace(fileExt,"").toLowerCase() + Date.now() ;
         cb(null,filename+fileExt);  

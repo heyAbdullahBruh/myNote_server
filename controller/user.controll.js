@@ -42,11 +42,12 @@ const loginUser =async(req,res)=>{
                                 userId:user._id
                               };
                               const token =JWT.sign(payload,process.env.JWT_SECRET,{expiresIn:'10d'});
-                              res.cookie("token",token,{
-                                httpOnly:true,
-                                maxAge:'864000000',
-                                secure:true
-                             }); 
+                              res.cookie('token', token, {
+                                httpOnly: true,
+                                secure: false, // Only secure in production
+                                sameSite: 'lax', // Allows cookies for same-site requests
+                                maxAge:864000000
+                              });
                              return res.status(200).json({
                                 success:true,
                                 message:'User Logged In Successfully',
@@ -71,13 +72,30 @@ const loginUser =async(req,res)=>{
 
 const logoutUser =async(req,res)=>{
     try {
-          await res.clearCookie('token');
+          await res.clearCookie('token',{httpOnly:true});
           return res.status(200).json({success:true, message: 'LogOut successfully'});
     } catch (error) {
-       return res.status(500).json({success:false,message:`Something broke :${error.message}`})   
+       return res.status(500).json({success:false,message:`Something broke :${error.message}`});   
     };
 };
 
+const auth = (req,res)=>{
+  try {
+    const {token}=req.cookies;
+
+    if(token){
+      return res.status(200).json({
+        auth:true
+      });
+    }else{
+      return res.status(200).json({
+        auth:false
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({success:false,message:`Something broke :${error.message}`});   
+  }
+};
 
 //   get User 
 //   const getUser =async(req,res)=>{
@@ -102,4 +120,4 @@ const logoutUser =async(req,res)=>{
 // };
 
 
-module.exports= {loginUser,logoutUser};
+module.exports= {loginUser,logoutUser,auth};

@@ -27,7 +27,7 @@ const getMsg =async(req,res)=>{
     try {
           const msgs = await Msg.find();
           if(msgs.length>0){
-            return res.status(200).json({success:true,msgs});
+            return res.status(200).json({success:true,msgs:msgs.reverse()});
           } else {
             return res.status(404).json({success:false,message:'No have any your Messages'});
           }
@@ -40,7 +40,7 @@ const singleMsg =async(req,res)=>{
     try {
         const {mId}=req.params;
           const message = await Msg.findOne({_id:mId});
-          if(messages){
+          if(message){
             return res.status(200).json({success:true,message});
           } else {
             return res.status(404).json({success:false,message:'Not found'});

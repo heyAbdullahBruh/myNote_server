@@ -31,7 +31,7 @@ const addFriend =async(req,res)=>{
                 photos:imgUrls
             }); 
             await createFrnd.save();
-            return res.status(201).json({success:true,createFrnd}) 
+            return res.status(201).json({success:true,message:'New Friend Added',createFrnd}) 
         } else {
             return res.status(400).json({success:false,message:`Please fill the form`});  
         }
@@ -46,7 +46,7 @@ const getFrnds = async(req,res)=>{
   try {
       const frndAll= await Frnd.find();
       if (frndAll.length>0) {
-          return res.status(200).json(frndAll);
+          return res.status(200).json({success:true,frnd:frndAll.reverse()});
       } else {
           return res.status(404).json({success:false,message:'Not found '});
       }
@@ -61,7 +61,7 @@ const getSingleFrnds = async(req,res)=>{
         const {fId}=req.params;
         const user= await Frnd.findOne({_id:fId});
         if (user) {
-            return res.status(200).json(user);
+            return res.status(200).json({success:false,frnd:user});
         } else {
             return res.status(404).json({success:false,message:'Not found '});
         }
@@ -88,6 +88,7 @@ const updateFriend =async(req,res)=>{
                 imgId:result.public_id
               });
             };
+            const frnd = await Frnd.findOne({_id:fId});
 
             const updateF=await Frnd.findByIdAndUpdate(fId,{
                 $set:{
@@ -95,12 +96,12 @@ const updateFriend =async(req,res)=>{
                 call:call,
                 mail:mail,
                 desc:desc,
-                photos:imgUrls
+                photos:imgUrls.length>0?imgUrls:frnd.photos
                }    
             },{new:true}); 
 
             if (updateF) {
-                return res.status(201).json({success:true,updateF});  
+                return res.status(201).json({success:true,message:'Friend data updated successfully'});  
             } else {
               return res.status(400).json({success:false,message:'Update error'});     
             }

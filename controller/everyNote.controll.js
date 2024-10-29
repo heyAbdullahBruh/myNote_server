@@ -11,7 +11,7 @@ const addNote =async(req,res)=>{
                 noteDesc:description,
             });
             await noteAdd.save();
-            return res.status(201).json({success:true, message:'Note add seccessfully',noteAdd});
+            return res.status(201).json({success:true, message:'Note add seccessfully'});
 
           } else {
             return res.status(400).json({success:false,message:'Please fill the form'});
@@ -63,7 +63,7 @@ const updateNote =async(req,res)=>{
                 }
               },{new:true,timestamps:true});
               if(noteUpdate){
-                return res.status(202).json({success:true,noteUpdate});
+                return res.status(202).json({success:true,message:'Note has been updated'});
               }
         }else {
             return res.status(404).json({success:false,message:'note Not found'});

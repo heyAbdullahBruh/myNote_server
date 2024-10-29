@@ -27,7 +27,7 @@ const getPlan =async(req,res)=>{
     try {
           const plans = await Plan.find();
           if(plans.length>0){
-            return res.status(200).json({success:true,plans});
+            return res.status(200).json({success:true,plans:plans.reverse()});
           } else {
             return res.status(404).json({success:false,message:'No have any your plans'});
           }
@@ -79,7 +79,7 @@ const updatePlan =async(req,res)=>{
                 }
               },{new:true,timestamps:true});
               if(planUpdate){
-                return res.status(202).json({success:true,planUpdate});
+                return res.status(202).json({success:true,message:'Plan is Updated'});
               }
         }else {
             return res.status(404).json({success:false,message:'Not found'});

@@ -32,7 +32,7 @@ const addTerr =async(req,res)=>{
                 terrType:terrType
             }); 
             await createTerr.save();
-            return res.status(201).json({success:true,createTerr}) 
+            return res.status(201).json({success:true,message:'Terror has been added'}) 
         } else {
             return res.status(400).json({success:false,message:`Please fill the form`});  
         }
@@ -47,7 +47,7 @@ const getTerrs = async(req,res)=>{
   try {
       const TerrAll= await Terr.find();
       if (TerrAll.length>0) {
-          return res.status(200).json(TerrAll);
+          return res.status(200).json({success:true,terrs:TerrAll.reverse()});
       } else {
           return res.status(404).json({success:false,message:'Not found '});
       }
@@ -62,7 +62,7 @@ const getSingleTerr = async(req,res)=>{
         const {tId}=req.params;
         const user= await Terr.findOne({_id:tId});
         if (user) {
-            return res.status(200).json(user);
+            return res.status(200).json({success:true,terr:user});
         } else {
             return res.status(404).json({success:false,message:'Not found '});
         }
@@ -90,19 +90,21 @@ const updateTerr =async(req,res)=>{
               });
             };
 
+            const terr=await Terr.findOne({_id:tId});
+
             const updateT=await Terr.findByIdAndUpdate(tId,{
                 $set:{
                 name:name,
                 call:call,
                 mail:mail,
                 desc:desc,
-                photos:imgUrls,
+                photos:imgUrls.length>0 ?imgUrls : terr.photos,
                 terrType:terrType
                }    
             },{new:true}); 
 
             if (updateT) {
-                return res.status(201).json({success:true,updateT});  
+                return res.status(201).json({success:true,message:'Terror update successfully'});  
             } else {
               return res.status(400).json({success:false,message:'Update error'});     
             }
