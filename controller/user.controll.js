@@ -44,7 +44,9 @@ const loginUser =async(req,res)=>{
                               const token =JWT.sign(payload,process.env.JWT_SECRET,{expiresIn:'10d'});
                               res.cookie('token', token, {
                                 httpOnly: true,
-                                secure: true,
+                                secure: true, // only send cookie over HTTPS
+                                sameSite: 'None', // cross-site cookie
+                                domain: 'https://abdullah-shayed.onrender.com/', // replace with your specific domain
                                 maxAge:864000000
                               });
                              return res.status(200).json({

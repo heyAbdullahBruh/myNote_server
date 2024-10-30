@@ -41,9 +41,7 @@ app.get('/',(req,res)=>{
     } catch (error) {
         return res.status(500).json({success:false, messgae:`Something broke : ${error.messgae}`});
     };
-//  res.clearCookie('kk',{
-//     priority
-//  })
+
 });
 
 // Another routes
