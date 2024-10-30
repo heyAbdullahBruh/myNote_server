@@ -44,8 +44,8 @@ const loginUser =async(req,res)=>{
                               const token =JWT.sign(payload,process.env.JWT_SECRET,{expiresIn:'10d'});
                               res.cookie('token', token, {
                                 httpOnly: true,
-                                secure: false, // Only secure in production
-                                sameSite: 'lax', // Allows cookies for same-site requests
+                                secure: true,
+                                sameSite:'lax',
                                 maxAge:864000000
                               });
                              return res.status(200).json({
@@ -72,7 +72,11 @@ const loginUser =async(req,res)=>{
 
 const logoutUser =async(req,res)=>{
     try {
-          await res.clearCookie('token',{httpOnly:true});
+          await res.clearCookie('token',{
+            httpOnly:true,
+            secure:true,
+            sameSite:'lax',
+         });
           return res.status(200).json({success:true, message: 'LogOut successfully'});
     } catch (error) {
        return res.status(500).json({success:false,message:`Something broke :${error.message}`});   

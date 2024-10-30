@@ -21,8 +21,8 @@ app.use(express.static('public'));
 
 
 app.use(cors({
-    origin: ['http://localhost:3000','https://abdullah-shayed.vercel.app'],
-  credentials: true, // This is important, allows cookies to be sent with requests
+    origin: ['http://localhost:3000','https://abdullah-shayed.vercel.app/'],
+    credentials: true, // This is important, allows cookies to be sent with requests
 }));
 
 
@@ -32,7 +32,7 @@ app.get('/',(req,res)=>{
     } catch (error) {
         return res.status(500).json({success:false, messgae:`Something broke : ${error.messgae}`});
     };
-
+//  res.clearCookie('kk',)
 });
 
 // Another routes
