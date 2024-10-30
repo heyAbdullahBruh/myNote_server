@@ -21,7 +21,7 @@ app.use(express.static('public'));
 
 
 app.use(cors({
-    origin: ['http://localhost:3000','https://abdullah-shayed.vercel.app/'],
+    origin: 'https://abdullah-shayed.vercel.app',
     credentials: true, // This is important, allows cookies to be sent with requests
 }));
 
