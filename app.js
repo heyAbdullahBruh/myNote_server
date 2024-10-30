@@ -11,7 +11,6 @@ const terrRoute = require('./routes/terrTerg.route');
 const msgRoute = require('./routes/message.route');
 
 const app =express();
-// const allowedOrigins = ['http://localhost:3000','https://abdullah-shayed.vercel.app'];
 
 //Middleware funtion callling---->
 app.use(cookieParser());
@@ -19,9 +18,19 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(express.static('public'));
 
-
+const allowedOrigins = ['https://abdullah-shayed.onrender.com','http://localhost:3000'];
+  
+  // Configure CORS with specific origins
 app.use(cors({
-    origin: 'https://abdullah-shayed.onrender.com',
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true, // This is important, allows cookies to be sent with requests
 }));
 
@@ -32,7 +41,9 @@ app.get('/',(req,res)=>{
     } catch (error) {
         return res.status(500).json({success:false, messgae:`Something broke : ${error.messgae}`});
     };
-//  res.clearCookie('kk',)
+//  res.clearCookie('kk',{
+//     priority
+//  })
 });
 
 // Another routes

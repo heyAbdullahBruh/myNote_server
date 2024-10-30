@@ -43,6 +43,7 @@ const loginUser =async(req,res)=>{
                               };
                               const token =JWT.sign(payload,process.env.JWT_SECRET,{expiresIn:'10d'});
                               res.cookie('token', token, {
+                                httpOnly: true,
                                 secure: true,
                                 maxAge:864000000
                               });
@@ -71,6 +72,7 @@ const loginUser =async(req,res)=>{
 const logoutUser =async(req,res)=>{
     try {
           await res.clearCookie('token',{
+            httpOnly:true,
             secure:true,
          });
           return res.status(200).json({success:true, message: 'LogOut successfully'});
