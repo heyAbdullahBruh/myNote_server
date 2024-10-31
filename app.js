@@ -20,14 +20,11 @@ app.use(express.static('public'));
 
 // const allowedOrigins = ['https://abdullah-shayed.onrender.com','http://localhost:3000'];
   
-  // Configure CORS with specific origins
 app.use(cors({
-    origin: 'https://abdullah-shayed.onrender.com',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true, // This is important, allows cookies to be sent with requests
-}));
-
+    origin: 'https://abdullah-shayed.onrender.com', // replace with your client's domain
+    methods: 'GET,POST,PUT,PATCH,DELETE', // add methods as needed
+    credentials: true // if you're using cookies or authorization headers
+  }));
 
 app.get('/',(req,res)=>{
     try {
