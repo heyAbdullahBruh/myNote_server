@@ -21,7 +21,6 @@ app.use(express.static('public'));
 // const allowedOrigins = ['https://abdullah-shayed.onrender.com','http://localhost:3000'];
   
 app.use(cors({
-    origin: 'https://abdullah-shayed.onrender.com', // replace with your client's domain
     methods: 'GET,POST,PUT,PATCH,DELETE', // add methods as needed
     credentials: true // if you're using cookies or authorization headers
   }));
