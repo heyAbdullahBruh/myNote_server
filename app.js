@@ -58,13 +58,10 @@ app.use((req,res,next)=>{
 });
 
 // server error
-app.use((req,res,next,err)=>{
-    if (err) {
-        return res.status(500).json({success:false, messgae:`Something broke : ${err.messgae}`});
-    }else{
-        next();
-    }
-});
+    app.use((err, req, res, next) => {
+        console.error(err.stack); // Log error stack for debugging
+        return res.status(500).send('Something went wrong!');
+    });
 
  
 module.exports =app;
