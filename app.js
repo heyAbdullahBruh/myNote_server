@@ -20,12 +20,12 @@ app.use(express.static('public'));
 
 // const allowedOrigins = ['https://abdullah-shayed.onrender.com','http://localhost:3000'];
   
-    
-app.use(cors({
-    origin: 'https://abdullah-shayed.vercel.app/', // explicitly set this to your client domain
-    methods: 'GET,POST,PATCH,DELETE', // adjust based on the methods you need
-    credentials: true // allow credentials (cookies, authorization headers, etc.)
-  }));
+  //   {
+  //   origin: 'https://abdullah-shayed.vercel.app/', // explicitly set this to your client domain
+  //   methods: 'GET,POST,PATCH,DELETE', // adjust based on the methods you need
+  //   credentials: true // allow credentials (cookies, authorization headers, etc.)
+  // }
+app.use(cors());
 
 app.get('/',(req,res)=>{
     try {
