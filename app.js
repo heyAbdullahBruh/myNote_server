@@ -22,7 +22,7 @@ app.use(express.static('public'));
   
     
 app.use(cors({
-    origin: 'https://abdullah-shayed.onrender.com', // explicitly set this to your client domain
+    origin: 'https://abdullah-shayed.vercel.app/', // explicitly set this to your client domain
     methods: 'GET,POST,PATCH,DELETE', // adjust based on the methods you need
     credentials: true // allow credentials (cookies, authorization headers, etc.)
   }));
