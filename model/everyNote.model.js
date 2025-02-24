@@ -8,6 +8,12 @@ const enSchema= new mongoose.Schema({
    noteDesc: {
     type:String,
     required:true,
+   },
+   links:{
+      type:Array
+   },
+   imgs:{
+      type:Array
    }
 },{timestamps:true});
 
