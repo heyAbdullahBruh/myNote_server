@@ -7,7 +7,9 @@ const addNote = async (req, res) => {
     const { title, description, links } = req.body;
 
     if (!title || !description) {
-      return res.status(400).json({ success: false, message: "Please fill the form" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Please fill the form" });
     }
 
     const images = req.files || []; // Ensure it's an array to avoid errors
@@ -18,7 +20,7 @@ const addNote = async (req, res) => {
         try {
           const result = await imagekit.upload({
             file: img.buffer,
-            fileName: img.originalname, 
+            fileName: img.originalname,
             folder: "/noteImages",
           });
           return {
@@ -27,13 +29,13 @@ const addNote = async (req, res) => {
           };
         } catch (uploadError) {
           console.error("Image upload failed:", uploadError);
-          return null; 
+          return null;
         }
       })
     );
 
     // Filter out any failed uploads
-    const filteredImgUrls = imgUrls.filter(img => img !== null);
+    const filteredImgUrls = imgUrls.filter((img) => img !== null);
 
     const noteAdd = new Notes({
       noteTitle: title,
@@ -44,64 +46,73 @@ const addNote = async (req, res) => {
 
     await noteAdd.save();
 
-    return res.status(201).json({ success: true, message: "Note added successfully", note: noteAdd });
-
+    return res
+      .status(201)
+      .json({
+        success: true,
+        message: "Note added successfully",
+        note: noteAdd,
+      });
   } catch (error) {
     console.error("Error adding note:", error);
-    return res.status(500).json({ success: false, message: `Something broke: ${error.message}` });
+    return res
+      .status(500)
+      .json({ success: false, message: `Something broke: ${error.message}` });
   }
 };
-
 
 // Update note --->
 const updateNote = async (req, res) => {
   try {
     const { nId } = req.params;
     const { title, description, links } = req.body;
-    const note = await Notes.findOne({ _id: nId });
-    if (note) {
-      const images = req.files;
+    const note = await Notes.findById(nId);
 
-      const imgUrls = await Promise.all(
-        images.map(async (img) => {
-          const result = await imagekit.upload({
-            file: img.buffer,
-            fileName: file.originalname,
-            folder: "/noteImages",
-          });
-          return {
-            photo: result.url,
-            id: result.fileId,
-          };
-        })
-      );
-
-      const noteUpdate = await Notes.findByIdAndUpdate(
-        nId,
-        {
-          $set: {
-            noteTitle: title,
-            noteDesc: description,
-            links: links ? links : note.links,
-            imgs: imgUrls.length > 0 ? imgUrls : note.imgs,
-          },
-        },
-        { new: true, timestamps: true }
-      );
-      if (noteUpdate) {
-        return res
-          .status(200)
-          .json({ success: true, message: "Note has been updated" });
-      }
-    } else {
+    if (!note) {
       return res
         .status(404)
-        .json({ success: false, message: "note Not found" });
+        .json({ success: false, message: "Note not found" });
     }
+
+    let imgUrls = note.imgs; // Retain old images if no new ones are uploaded
+
+    if (req.files && req.files.length > 0) {
+      imgUrls = await Promise.all(
+        req.files.map(async (img) => {
+          const result = await imagekit.upload({
+            file: img.buffer,
+            fileName: img.originalname, // Fixed reference to originalname
+            folder: "/noteImages",
+          });
+          return { photo: result.url, id: result.fileId };
+        })
+      );
+    }
+
+    const noteUpdate = await Notes.findByIdAndUpdate(
+      nId,
+      {
+        $set: {
+          noteTitle: title || note.noteTitle,
+          noteDesc: description || note.noteDesc,
+          links: links !== undefined ? links : note.links,
+          imgs: imgUrls,
+        },
+      },
+      { new: true }
+    );
+
+    if (noteUpdate) {
+      return res
+        .status(200)
+        .json({ success: true, message: "Note has been updated" });
+    }
+
+    res.status(500).json({ success: false, message: "Failed to update note" });
   } catch (error) {
     return res
       .status(500)
-      .json({ success: false, message: `Something broke :${error.message}` });
+      .json({ success: false, message: `Something broke: ${error.message}` });
   }
 };
 
@@ -145,12 +156,12 @@ const deleteNote = async (req, res) => {
     const { nId } = req.params;
     const note = await Notes.findOne({ _id: nId });
     if (note) {
-      const fileIds = note.imgs.map(img => img.id);
+      const fileIds = note.imgs.map((img) => img.id);
 
       if (fileIds.length > 0) {
         await imagekit.bulkDeleteFiles(fileIds);
-      };
-  
+      }
+
       const deleteNote = await Notes.findByIdAndDelete(nId);
 
       if (deleteNote) {
